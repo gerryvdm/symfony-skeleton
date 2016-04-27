@@ -37,8 +37,8 @@ final class ProjectConfigurator
      */
     public function run()
     {
-        $namespace = $this->ask('Namespace', [$this, 'validateNamespace'], 'App');
-        $packageName = $this->ask('Package name', [$this, 'validatePackageName'], $this->suggestPackageName($namespace));
+        $namespace = $this->ask('Namespace', function ($namespace) { return $this->validateNamespace($namespace); }, 'App');
+        $packageName = $this->ask('Package name', function ($packageName) { return $this->validatePackageName($packageName); }, $this->suggestPackageName($namespace));
         $license = $this->ask('License', function ($license) { return trim($license); }, 'proprietary');
         $description = $this->ask('Description', function ($description) { return trim($description); }, '');
 
