@@ -1,0 +1,13 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+imports:
+    - { resource: services/commands.yml }
+    - { resource: services/controllers.yml }
+    - { resource: services/event_listeners.yml }
+    - { resource: services/form_types.yml }
+    - { resource: services/repositories.yml }
+
+services:
+#    app.example_service:
+#        class: App\ExampleService
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
