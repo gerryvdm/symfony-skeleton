@@ -1,5 +1,5 @@
-gerryvdm/symfony
-================
+gerryvdm/symfony-skeleton
+=========================
 
 Project skeleton for Symfony applications.
 
