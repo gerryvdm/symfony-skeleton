@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+debconf-set-selections <<< "mysql-server mysql-server/root_password password root"
+debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
+
+apt-get update
+apt-get -y install mysql-server nginx-light php5-apcu php5-cli php5-curl php5-fpm php5-intl php5-mcrypt php5-mysqlnd
+apt-get clean
+
+printf "server {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\n\tserver_name _;\n\n\troot /vagrant/web;\n\n\tlocation / {\n\t\ttry_files \$uri @app;\n\t}\n\n\tlocation @app {\n\t\tfastcgi_pass unix:/var/run/php5-fpm.sock;\n\t\tinclude fastcgi_params;\n\t\tfastcgi_param SCRIPT_FILENAME /vagrant/app/app.php;\n\t\tfastcgi_param SYMFONY_ENV dev;\n\t\tfastcgi_param SYMFONY_DEBUG 1;\n\t}\n}\n" > /etc/nginx/sites-available/default
+
+service nginx restart
+
+sed -e 's/^;date.timezone =.*/date.timezone = "Europe\/Brussels"/' < /usr/share/php5/php.ini-development > /etc/php5/fpm/php.ini
+sed -e 's/^;date.timezone =.*/date.timezone = "Europe\/Brussels"/' -e 's/^disable_functions =.*/;disable_functions =/' -e 's/^memory_limit =.*/memory_limit = -1/' < /usr/share/php5/php.ini-development > /etc/php5/cli/php.ini
+
+sed -i 's/^user = .*/user = vagrant/' /etc/php5/fpm/pool.d/www.conf
+sed -i 's/^group = .*/group = vagrant/' /etc/php5/fpm/pool.d/www.conf
+
+service php5-fpm restart
+
+wget -qO - http://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+
+su vagrant -c "composer install -d=/vagrant --no-interaction --no-progress"
+
+echo -e "\nif [ -d /vagrant ] ; then\n    cd /vagrant\nfi" >> /home/vagrant/.profile
