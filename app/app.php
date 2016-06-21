@@ -12,7 +12,9 @@ $loader = require __DIR__ . '/autoload.php';
 $env = getenv('SYMFONY_ENV') ?: 'prod';
 $debug = getenv('SYMFONY_DEBUG') === '1' && $env !== 'prod';
 
-include_once __DIR__ . '/../var/bootstrap.php.cache';
+if (!$debug) {
+    require __DIR__ . '/../var/bootstrap.php.cache';
+}
 
 if ($debug) {
     Debug::enable();

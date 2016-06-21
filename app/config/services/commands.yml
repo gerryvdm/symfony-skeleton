@@ -1,6 +1,6 @@
 services:
-#    app.example_command:
+#    app.command.example:
 #        class: App\Command\ExampleCommand
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+#        arguments: ["@service_name", "plain_value", "%parameter_name%"]
 #        tags:
 #            - { name: console.command }

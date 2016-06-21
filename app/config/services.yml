@@ -8,6 +8,6 @@ imports:
     - { resource: services/repositories.yml }
 
 services:
-#    app.example_service:
+#    app.service.example:
 #        class: App\ExampleService
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+#        arguments: ["@service_name", "plain_value", "%parameter_name%"]

@@ -1,4 +1,4 @@
 services:
-#    app.example_controller:
+#    app.controller.example:
 #        class: App\Controller\ExampleController
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+#        arguments: ["@service_name", "plain_value", "%parameter_name%"]

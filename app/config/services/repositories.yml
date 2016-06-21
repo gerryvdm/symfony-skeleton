@@ -1,10 +1,10 @@
 services:
-#    app.abstract_repository:
+#    app.repository.abstract:
+#        factory: ["@doctrine.orm.entity_manager", getRepository]
 #        abstract: true
-#        factory: [@doctrine.orm.entity_manager, getRepository]
 #        public: false
 #
-#    app.example_repository:
+#    app.repository.example:
 #        class: App\Repository\ExampleRepository
 #        parent: app.abstract_repository
 #        arguments: [App\Entity\ExampleEntity]
