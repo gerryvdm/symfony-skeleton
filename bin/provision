@@ -1,28 +1,32 @@
 #!/usr/bin/env bash
 
-echo -e "deb http://packages.dotdeb.org jessie all\ndeb-src http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list
-wget -qO - https://www.dotdeb.org/dotdeb.gpg | sudo apt-key add -
+echo -e "\nif [ -d /vagrant ] ; then\n    cd /vagrant\nfi" >> /home/vagrant/.profile
+
+apt-get -q update
+apt-get -qy install apt-transport-https
+
+wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add -
+echo "deb https://packages.sury.org/php/ jessie main" > /etc/apt/sources.list.d/php.list
 
 debconf-set-selections <<< "mysql-server mysql-server/root_password password root"
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
 
 apt-get -q update
-apt-get -qy install git mysql-server nginx-light php7.0-apcu php7.0-bcmath php7.0-cli php7.0-curl php7.0-fpm php7.0-intl php7.0-mbstring php7.0-mcrypt php7.0-mysqlnd php7.0-ssh2 php7.0-xml php7.0-zip
+apt-get -qy install git mysql-server nginx-light php-apcu php-ssh2 php7.1-bcmath php7.1-cli php7.1-curl php7.1-fpm php7.1-intl php7.1-mbstring php7.1-mcrypt php7.1-mysql php7.1-xml php7.1-zip
 apt-get -q clean
 
-printf "server {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\n\tserver_name _;\n\n\troot /vagrant/web;\n\n\tlocation / {\n\t\ttry_files \$uri @app;\n\t}\n\n\tlocation @app {\n\t\tfastcgi_pass unix:/var/run/php5-fpm.sock;\n\t\tinclude fastcgi_params;\n\t\tfastcgi_param SCRIPT_FILENAME /vagrant/app/app.php;\n\t\tfastcgi_param SYMFONY_ENV dev;\n\t\tfastcgi_param SYMFONY_DEBUG 1;\n\t}\n}\n" > /etc/nginx/sites-available/default
+printf "server {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\n\tserver_name _;\n\n\troot /vagrant/web;\n\n\tlocation / {\n\t\ttry_files \$uri @app;\n\t}\n\n\tlocation @app {\n\t\tfastcgi_pass unix:/var/run/php/php7.1-fpm.sock;\n\t\tinclude fastcgi_params;\n\t\tfastcgi_param SCRIPT_FILENAME /vagrant/app/app.php;\n\t\tfastcgi_param SYMFONY_ENV dev;\n\t\tfastcgi_param SYMFONY_DEBUG 1;\n\t}\n}\n" > /etc/nginx/sites-available/default
 
 service nginx restart
 
-sed -e 's/^;date.timezone =.*/date.timezone = "Europe\/Brussels"/' < /usr/lib/php/7.0/php.ini-development > /etc/php/7.0/fpm/php.ini
-sed -e 's/^;date.timezone =.*/date.timezone = "Europe\/Brussels"/' -e 's/^disable_functions =.*/;disable_functions =/' -e 's/^memory_limit =.*/memory_limit = -1/' < /usr/lib/php/7.0/php.ini-development > /etc/php/7.0/cli/php.ini
+sed -e 's/^;date.timezone =.*/date.timezone = "Europe\/Brussels"/' < /usr/lib/php/7.1/php.ini-development > /etc/php/7.1/fpm/php.ini
+sed -e 's/^;date.timezone =.*/date.timezone = "Europe\/Brussels"/' -e 's/^disable_functions =.*/;disable_functions =/' -e 's/^memory_limit =.*/memory_limit = -1/' < /usr/lib/php/7.1/php.ini-development > /etc/php/7.1/cli/php.ini
 
-sed -i -e 's/^user = .*/user = vagrant/' -e 's/^group = .*/group = vagrant/' /etc/php/7.0/fpm/pool.d/www.conf
+sed -i -e 's/^user = .*/user = vagrant/' -e 's/^group = .*/group = vagrant/' /etc/php/7.1/fpm/pool.d/www.conf
 
-service php7.0-fpm restart
+service php7.1-fpm restart
 
 wget -qO - http://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+wget https://phar.phpunit.de/phpunit.phar && mv phpunit.phar /usr/local/bin/phpunit && chmod +x /usr/local/bin/phpunit
 
 su vagrant -c "composer install -d=/vagrant --no-interaction --no-progress"
-
-echo -e "\nif [ -d /vagrant ] ; then\n    cd /vagrant\nfi" >> /home/vagrant/.profile

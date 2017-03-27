@@ -8,10 +8,10 @@ parameters:
 
 framework:
     #esi: ~
-    #translator: { fallbacks: ["%locale%"] }
-    secret: "%secret%"
+    #translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        resource: '%kernel.root_dir%/config/routing.yml'
         strict_requirements: ~
     form: ~
     csrf_protection: ~
@@ -19,7 +19,7 @@ framework:
     #serializer: { enable_annotations: false }
     templating:
         engines: [twig]
-    default_locale: "%locale%"
+    default_locale: '%locale%'
     trusted_hosts: ~
     trusted_proxies: ~
     session:
@@ -27,34 +27,36 @@ framework:
     fragments: ~
     http_method_override: true
     assets: ~
+    php_errors:
+        log: true
 
 twig:
-    debug: "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
 
 doctrine:
     dbal:
         driver: pdo_mysql
-        host: "%database_host%"
-        port: "%database_port%"
-        dbname: "%database_name%"
-        user: "%database_user%"
-        password: "%database_password%"
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
         charset: UTF8
 
     orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: false
         #mappings:
         #    model:
         #        prefix: App\Entity
         #        type: yml
-        #        dir: "%kernel.root_dir%/config/doctrine"
+        #        dir: '%kernel.root_dir%/config/doctrine'
 
 swiftmailer:
-    transport: "%mailer_transport%"
-    host: "%mailer_host%"
-    username: "%mailer_user%"
-    password: "%mailer_password%"
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
     spool: { type: memory }

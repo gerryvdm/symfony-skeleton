@@ -8,4 +8,4 @@ imports:
 services:
 #    app.service.example:
 #        class: App\ExampleService
-#        arguments: ["@service_name", "plain_value", "%parameter_name%"]
+#        arguments: ['@service_name', 'plain_value', '%parameter_name%']

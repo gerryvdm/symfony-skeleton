@@ -1,6 +1,6 @@
 services:
 #    app.repository.abstract:
-#        factory: ["@doctrine.orm.entity_manager", getRepository]
+#        factory: ['@doctrine.orm.entity_manager', getRepository]
 #        abstract: true
 #        public: false
 #

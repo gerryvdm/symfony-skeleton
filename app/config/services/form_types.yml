@@ -1,6 +1,6 @@
 services:
 #    app.form_type.example:
 #        class: App\Form\ExampleType
-#        arguments: ["@service_name", "plain_value", "%parameter_name%"]
+#        arguments: ['@service_name', 'plain_value', '%parameter_name%']
 #        tags:
 #            - { name: form.type }

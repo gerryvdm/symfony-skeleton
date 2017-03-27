@@ -1,6 +1,6 @@
 services:
 #    app.event_listener.example:
 #        class: App\EventListener\ExampleListener
-#        arguments: ["@service_name", "plain_value", "%parameter_name%"]
+#        arguments: ['@service_name', 'plain_value', '%parameter_name%']
 #        tags:
 #            - { name: kernel.event_subscriber }
